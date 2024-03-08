@@ -2714,7 +2714,7 @@ console.log(checkAge(21));
 
 ---
 
-###### 85. Яка інформація буде залогована?
+###### 85. Яка інформація буде залогованою?
 
 ```javascript
 fetch('https://www.website.com/api/user/1')
@@ -2733,6 +2733,333 @@ fetch('https://www.website.com/api/user/1')
 #### Відповідь: C
 
 Значення `res` у другому `.then` дорівнює поверненому значенню попереднього `.then`. Таким чином ми можемо продовжувати ланцюжок `.then`, де значення передається наступному обробнику.
+
+</p>
+</details>
+
+---
+
+###### 86. Яким способом можна встановити `hasName` рівним `true`, якщо ви не можете передати `true` як аргумент?
+
+```javascript
+function getName(name) {
+  const hasName = //
+}
+```
+
+- A: `!!name`
+- B: `name`
+- C: `new Boolean(name)`
+- D: `name.length`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: A
+
+За допомогою `!!name` ми визначаємо, чи значення `name` true чи false. Якщо `name` є значенням true, `!name` повертає `false`. `!false` (що фактично є `!!name`) повертає `true`.
+
+Встановлюючи `hasName` рівним `name`, ми встановлюємо `hasName` рівним будь-якому значенню, яке ми передали функції `getName`, а не логічному значенню `true`.
+
+`new Boolean(true)` повертає обгортку об’єкта, а не саме булеве значення.
+
+`name.length` повертає довжину переданого аргументу, а не те, чи є він `true`.
+
+</p>
+</details>
+
+---
+
+###### 87. Що буде на виході?
+
+```javascript
+console.log('I want pizza'[0]);
+```
+
+- A: `"""`
+- B: `"I"`
+- C: `SyntaxError`
+- D: `undefined`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: B
+
+Щоб отримати символ за певним індексом рядка, ми можемо використовувати позначення в дужках. Перший символ у рядку має індекс 0 і так далі. У цьому випадку ми хочемо отримати елемент з індексом 0, символ `"I"`, який логується.
+
+Зауважте, що цей метод не підтримується в IE7 і нижче. У такому випадку використовуйте `.charAt()`.
+
+</p>
+</details>
+
+---
+
+###### 88. Що буде на виході?
+
+```javascript
+function sum(num1, num2 = num1) {
+  console.log(num1 + num2);
+}
+
+sum(10);
+```
+
+- A: `NaN`
+- B: `20`
+- C: `ReferenceError`
+- D: `undefined`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: B
+
+Ми можемо встановити значення параметра за замовчуванням рівним іншому параметру функції, якщо вони були визначені _перед_ параметром за замовчуванням. Ми передаємо значення `10` у функцію `sum`. Якщо функція `sum` отримує лише 1 аргумент, це означає, що значення `num2` не передається, а значення `num1` у цьому випадку дорівнює переданому значенню `10`. Значенням за замовчуванням `num2` є значення `num1`, яке дорівнює `10`. `num1 + num2` повертає `20`.
+
+Якщо ми намагаємося встановити значення параметра за замовчуванням, що дорівнює параметру, визначеному _після_ (праворуч), значення параметра ще не ініціалізовано, що викличе помилку.
+
+</p>
+</details>
+
+---
+
+###### 89. Що буде на виході?
+
+```javascript
+// module.js
+export default () => 'Hello world';
+export const name = 'Lydia';
+
+// index.js
+import * as data from './module';
+
+console.log(data);
+```
+
+- A: `{ default: function default(), name: "Lydia" }`
+- B: `{ default: function default() }`
+- C: `{ default: "Hello world", name: "Lydia" }`
+- D: Глобальний об’єкт `module.js`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: A
+
+За допомогою синтаксису `import * as name` ми імпортуємо _всі експорти_ з файлу `module.js` у файл `index.js`, коли створюється новий об’єкт під назвою `data`. У файлі `module.js` є два експорти: експорт за замовчуванням і іменований експорт. Експорт за замовчуванням — це функція, яка повертає рядок `"Hello World"`, а іменований експорт — це змінна `name`, яка має значення рядка `"Lydia"`.
+
+Об’єкт `data` має властивість `default` для експорту за замовчуванням, інші властивості мають назви іменованих експортів та їхні відповідні значення.
+
+</p>
+</details>
+
+---
+
+###### 90. Що буде на виході?
+
+```javascript
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+const member = new Person('John');
+console.log(typeof member);
+```
+
+- A: `"class"`
+- B: `"function"`
+- C: `"object"`
+- D: `"string"`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: C
+
+Класи є синтаксичним цукром для конструкторів функцій. Еквівалентом класу `Person` як конструктора функції буде:
+
+```javascript
+function Person(name) {
+  this.name = name;
+}
+```
+
+Виклик конструктора функції з `new` призводить до створення екземпляра `Person`, ключове слово `typeof` повертає `"object"` для екземпляра. `typeof member` повертає `"object"`.
+
+</p>
+</details>
+
+---
+
+###### 91. Що буде на виході?
+
+```javascript
+let newList = [1, 2, 3].push(4);
+
+console.log(newList.push(5));
+```
+
+- A: `[1, 2, 3, 4, 5]`
+- B: `[1, 2, 3, 5]`
+- C: `[1, 2, 3, 4]`
+- D: `Error`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: D
+
+Метод `.push` повертає _нову довжину_ масиву, а не сам масив! Встановлюючи `newList` рівним `[1, 2, 3].push(4)`, ми встановлюємо `newList` рівним новій довжині масиву: `4`.
+
+Потім ми намагаємося використати метод `.push` для `newList`. Оскільки `newList` є числом `4`, ми не можемо використовувати метод `.push`: викидається TypeError.
+
+</p>
+</details>
+
+---
+
+###### 92. Що буде на виході?
+
+```javascript
+function giveLydiaPizza() {
+  return 'Here is pizza!';
+}
+
+const giveLydiaChocolate = () =>
+  "Here's chocolate... now go hit the gym already.";
+
+console.log(giveLydiaPizza.prototype);
+console.log(giveLydiaChocolate.prototype);
+```
+
+- A: `{ constructor: ...}` `{ constructor: ...}`
+- B: `{}` `{ constructor: ...}`
+- C: `{ constructor: ...}` `{}`
+- D: `{ constructor: ...}` `undefined`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: D
+
+Звичайні функції, такі як функція `giveLydiaPizza`, мають властивість `prototype`, яка є об’єктом (об’єктом-прототипом) із властивістю `constructor`. Однак стрілкова функція, така як функція `giveLydiaChocolate`, не має цієї властивості `prototype`. `undefined` повертається під час спроби отримати доступ до властивості `prototype` за допомогою `giveLydiaChocolate.prototype`.
+
+</p>
+</details>
+
+---
+
+###### 93. Що буде на виході?
+
+```javascript
+const person = {
+  name: 'Lydia',
+  age: 21,
+};
+
+for (const [x, y] of Object.entries(person)) {
+  console.log(x, y);
+}
+```
+
+- A: `name` `Lydia` та `age` `21`
+- B: `["name", "Lydia"]` та `["age", 21]`
+- C: `["name", "age"]` та `undefined`
+- D: `Error`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: A
+
+`Object.entries(person)` повертає масив вкладених масивів, що містить ключі та об’єкти:
+
+`[ [ 'name', 'Lydia' ], [ 'age', 21 ] ]`
+
+Використовуючи цикл for-of, ми можемо перебирати кожен елемент у масиві, у такому випадку підмасиви. Ми можемо миттєво деструктурувати підмасиви в циклі for-of, використовуючи `const [x, y]`. `x` дорівнює першому елементу підмасиву, `y` дорівнює другому елементу підмасиву.
+
+Перший підмасив – це `[ "name", "Lydia" ]`, де `x` дорівнює `"name"`, а `y` дорівнює `"Lydia"`, які логуються.
+Другий підмасив – це `[ "age", 21 ]`, де `x` дорівнює `"age"`, а `y` дорівнює `21`, які логуються.
+
+</p>
+</details>
+
+---
+
+###### 94. Що буде на виході?
+
+```javascript
+function getItems(fruitList, ...args, favoriteFruit) {
+  return [...fruitList, ...args, favoriteFruit]
+}
+
+getItems(["banana", "apple"], "pear", "orange")
+```
+
+- A: `["banana", "apple", "pear", "orange"]`
+- B: `[["banana", "apple"], "pear", "orange"]`
+- C: `["banana", "apple", ["pear"], "orange"]`
+- D: `SyntaxError`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: D
+
+`...args` є rest параметром. Значення rest параметра — це масив, що містить усі аргументи, що залишилися, **і може бути лише останнім параметром**! У цьому прикладі rest параметр був другим параметром. Це неможливо, і викличе синтаксичну помилку.
+
+```javascript
+function getItems(fruitList, favoriteFruit, ...args) {
+  return [...fruitList, ...args, favoriteFruit];
+}
+
+getItems(['banana', 'apple'], 'pear', 'orange');
+```
+
+Наведений вище приклад працює. Він повертає масив`[ 'banana', 'apple', 'orange', 'pear' ]`
+
+</p>
+</details>
+
+---
+
+###### 95. Що буде на виході?
+
+```javascript
+function nums(a, b) {
+  if (a > b) console.log('a is bigger');
+  else console.log('b is bigger');
+  return
+  a + b;
+}
+
+console.log(nums(4, 2));
+console.log(nums(1, 2));
+```
+
+- A: `a is bigger`, `6` та `b is bigger`, `3`
+- B: `a is bigger`, `undefined` та `b is bigger`, `undefined`
+- C: `undefined` та `undefined`
+- D: `SyntaxError`
+
+<details><summary><b>Відповідь</b></summary>
+<p>
+
+#### Відповідь: B
+
+У JavaScript нам _не потрібно_ явно писати крапку з комою (`;`), однак механізм JavaScript все одно додає їх після інструкцій. Це називається **Автоматична вставка крапки з комою**. інструкції можуть бути, наприклад, змінні або ключові слова, як-от `throw`, `return`, `break` тощо.
+
+Тут ми написали оператор `return` і ще одне значення `a + b` у _новому рядку_. Однак, оскільки це новий рядок, рушій не знає, що це насправді значення, яке ми хотіли повернути. Замість цього він автоматично додає крапку з комою після `return`. Ми можемо побачити це як:
+
+```javascript
+return;
+a + b;
+```
+
+Це означає, що `a + b` ніколи не досягається, оскільки функція припиняє роботу після ключового слова `return`. Якщо значення не повертається, як тут, функція повертає `undefined`. Зауважте, що автоматичної вставки після операторів `if/else` немає!
 
 </p>
 </details>
